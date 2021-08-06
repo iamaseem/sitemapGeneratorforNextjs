@@ -1,0 +1,286 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Propertys {
+  id                         Int    @id @default(autoincrement())
+  projectName                String?   @db.VarChar(255)
+  saleOrRent                 String?   @db.VarChar(255)
+  propertyType               String?   @db.VarChar(255)
+  specifcation               String?   @db.VarChar(255)
+  posessionYear              Int?
+  areaTypePrice              Json      @db.Json
+  descriptions               String?   @db.VarChar(5000)
+  metaDataDescription        String?   @db.VarChar(5000)
+  facing                     String?   @db.VarChar(255)
+  bathrooms                  Int?
+  numberOfParking            Int?
+  additionalRooms            String[]  @db.VarChar(255)
+  possessionStatus           String?   @db.VarChar(255)
+  carpetArea                 String?   @db.VarChar(255)
+  furnishingStatus           String?   @db.VarChar(255)
+  floorNo                    Int?
+  towerOrblock               String?   @db.VarChar(255)
+  unitNo                     Int?
+  aboutLocality              String?   @db.VarChar(500)
+  aboutLocalityPoints        String[]  @db.VarChar(255)
+  // aminities                  Json[]     @db.Json
+  map                        Json?     @db.Json
+  planName                   String?   @db.VarChar(255)
+  planType                   String?   @db.VarChar(255)
+  planDescription            String?   @db.VarChar(255)
+  state                      String?   @db.VarChar(255)
+  district                   String?   @db.VarChar(255)
+  location                   String?   @db.VarChar(255)
+  propertySlug               String?   @db.VarChar(200)
+  status                     String?   @default("Pending") @db.VarChar(255)
+  builderId                  Int?
+  creator_id                 Int?
+  createdAt                  DateTime  @db.Timestamptz(6)
+  updatedAt                  DateTime  @db.Timestamptz(6)
+  Builders                   Builders? @relation(fields: [builderId], references: [id])
+  Users                      Users?    @relation(fields: [creator_id], references: [id])
+  Images                     Images[]
+  AmenitysEntries            AmenitysEntries[]
+  Favorites                  Favorites[]
+}
+
+model AdditionalRooms {
+  id         Int   @id @default(autoincrement())
+  name       String?  @db.VarChar(255)
+  status     String?  @default("active") @db.VarChar(255)
+  creator_id Int?
+  createdAt  DateTime @db.Timestamptz(6)
+  updatedAt  DateTime @db.Timestamptz(6)
+  Users      Users?   @relation(fields: [creator_id], references: [id])
+}
+
+model Amenitys {
+  id          Int   @id @default(autoincrement())
+  amenityName String?  @db.VarChar(255)
+  status      String?  @default("active") @db.VarChar(255)
+  createdAt   DateTime @db.Timestamptz(6)
+  updatedAt   DateTime @db.Timestamptz(6)
+  Images      Images[]
+  AmenitysEntries AmenitysEntries[]
+}
+
+model Builders {
+  id                  Int      @id @default(autoincrement())
+  name                String?     @db.VarChar(255)
+  address             String?     @db.VarChar(255)
+  yearsOfExperience   Int?
+  totalProjects       Int?
+  projectsCompleted   Int?
+  projectsOngoing     Int?
+  operatedIn          String?     @db.VarChar(255)
+  projectsdescription String?     @db.VarChar(255)
+  status              String?     @default("active") @db.VarChar(255)
+  createdAt           DateTime    @db.Timestamptz(6)
+  updatedAt           DateTime    @db.Timestamptz(6)
+  Images              Images[]
+  Propertys           Propertys[]
+}
+
+model Images {
+  id           Int     @id @default(autoincrement())
+  type         String?    @db.VarChar(255)
+  doc_id       Int?
+  property_id  Int?
+  builder_id   Int?
+  amenities_id Int?
+  small        String?    @db.VarChar(255)
+  medium       String?    @db.VarChar(255)
+  large        String?    @db.VarChar(255)
+  description  String?    @db.VarChar(500)
+  title        String?    @db.VarChar(255)
+  tags         String[]   @db.VarChar(255)
+  status       String?    @default("active") @db.VarChar(255)
+  createdAt    DateTime   @db.Timestamptz(6)
+  updatedAt    DateTime   @db.Timestamptz(6)
+  user_id      Int?
+  Amenitys     Amenitys?  @relation(fields: [amenities_id], references: [id])
+  Builders     Builders?  @relation(fields: [builder_id], references: [id])
+  Propertys    Propertys? @relation(fields: [property_id], references: [id])
+  Users        Users?     @relation(fields: [user_id], references: [id])
+}
+
+model Locations {
+  ID         Int   @id @default(autoincrement())
+  name       String   @db.VarChar(255)
+  parent_id  Int?
+  cordinates Json?    @db.Json
+  alias      String?  @db.VarChar(255)
+  mongo_id   Int?
+  type       String?  @db.VarChar(255)
+  createdAt  DateTime @db.Timestamptz(6)
+  updatedAt  DateTime @db.Timestamptz(6)
+}
+
+model UserAuths {
+  id           Int        @id @default(autoincrement())
+  userId       Int?
+  provider     String?    @db.VarChar(255)
+  password     String?
+  otp          Int?
+  refreshToken String?
+  profileId    Int?
+  createdAt    DateTime   @db.Timestamptz(6)
+  updatedAt    DateTime   @db.Timestamptz(6)
+  Users        Users?     @relation(fields: [userId], references: [id])
+}
+
+model Users {
+  id               Int               @id @default(autoincrement())
+  firstName        String?           @db.VarChar(255)
+  lastName         String?           @db.VarChar(255)
+  phoneNumber      String?           @db.VarChar(255)
+  email            String?           @db.VarChar(255)
+  status           String?           @default("active") @db.VarChar(255)
+  role             String?           @db.VarChar(255)
+  createdAt        DateTime          @db.Timestamptz(6)
+  updatedAt        DateTime          @db.Timestamptz(6)
+  currentAddress   String?           @db.VarChar(255)
+  permanantAddress String?           @db.VarChar(255)
+  gender           String?           @db.VarChar(255)
+  dateOfBirth      String?           @db.VarChar(255)
+  AdditionalRooms  AdditionalRooms[]
+  Images           Images[]
+  Propertys        Propertys[]
+  UserAuths        UserAuths[]
+}
+
+// model websiteCustomers {
+//   id               Int               @id @default(autoincrement())
+//   name             String?           @db.VarChar(255)
+//   email            String            @unique @db.VarChar(255)
+//   password         String?
+// }
+
+model Favorites {
+  id               Int               @id @default(autoincrement())
+  userid           String            @db.VarChar()
+  propertyid       Int               @db.Integer
+  createdAt        DateTime          @default(now())
+  updatedAt        DateTime          @default(now())
+  Propertys        Propertys?        @relation(fields: [propertyid], references:[id])
+}
+
+
+
+
+model Account {
+  id                 String    @id @default(cuid())
+  compoundId         String    @unique @map(name: "compound_id")
+  userId             String       @map(name: "user_id")
+  providerType       String    @map(name: "provider_type")
+  providerId         String    @map(name: "provider_id")
+  providerAccountId  String    @map(name: "provider_account_id")
+  refreshToken       String?   @map(name: "refresh_token")
+  accessToken        String?   @map(name: "access_token")
+  accessTokenExpires DateTime? @map(name: "access_token_expires")
+  createdAt          DateTime  @default(now()) @map(name: "created_at")
+  updatedAt          DateTime  @default(now()) @map(name: "updated_at")
+
+  @@index([providerAccountId], name: "providerAccountId")
+  @@index([providerId], name: "providerId")
+  @@index([userId], name: "userId")
+  @@map(name: "webAccountDetails")
+}
+
+model Session {
+  id                 String    @id @default(cuid())
+  userId       String      @map(name: "user_id")
+  expires      DateTime
+  sessionToken String   @unique @map(name: "session_token")
+  accessToken  String   @unique @map(name: "access_token")
+  createdAt    DateTime @default(now()) @map(name: "created_at")
+  updatedAt    DateTime @default(now()) @map(name: "updated_at")
+
+  @@map(name: "webSessions")
+}
+
+model User {
+  id              String      @id @default(cuid())
+  name            String?
+  email           String?     @unique
+  emailVerified   DateTime?   @map(name: "email_verified")
+  password        String?
+  image           String?
+  mobile          Int?
+  favorites       Int[]
+  createdAt       DateTime    @default(now()) @map(name: "created_at")
+  updatedAt       DateTime    @default(now()) @map(name: "updated_at")
+
+  @@map(name: "websiteCustomers")
+}
+
+model VerificationRequest {
+  id         Int    @id @default(autoincrement())
+  identifier String
+  token      String   @unique
+  expires    DateTime
+  createdAt  DateTime @default(now()) @map(name: "created_at")
+  updatedAt  DateTime @default(now()) @map(name: "updated_at")
+
+  @@map(name: "verification_requests")
+}
+
+model leads {
+  id         Int      @default(autoincrement()) @id
+  name       String
+  email      String
+  mobile     String
+  userId     String
+  createdAt  DateTime @default(now())
+}
+
+model AmenitysEntries {
+  id            Int         @default(autoincrement()) @id
+  amenityId     Int?      
+  propertyId    Int?
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @default(now())
+  Amenitys      Amenitys?   @relation(fields: [amenityId], references: [id])
+  Propertys     Propertys?  @relation(fields: [propertyId], references: [id])
+}
+
+model searchslug {
+  id            Int         @default(autoincrement()) @id
+  slug          String      @unique
+  location      String?
+  map           Json?
+  bhk           Int?
+  propertyType      String?
+  saleType      String?
+  area_min      Int?
+  area_max      Int?
+  min_budget    Int?
+  max_budget    Int?
+  possessionStatus  String?
+  projectname   String?
+  buildername   String?
+  locationlat   String?
+  locationlng   String?
+}
+
+model otp {
+  id           Int        @default(autoincrement()) @id
+  userid       String
+  email        String
+  otp          Int
+  createdAt    DateTime   @default(now()) @map(name: "created_at")
+  updatedAt    DateTime   @default(now()) @map(name: "updated_at")
+}
+
+model subscribe {
+  id           Int        @default(autoincrement()) @id
+  email        String
+  createdAt    DateTime   @default(now()) @map(name: "created_at")
+  updatedAt    DateTime   @default(now()) @map(name: "updated_at")
+}
