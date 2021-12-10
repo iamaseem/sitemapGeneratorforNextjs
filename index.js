@@ -77,45 +77,45 @@ async function main() {
   const AllPropertyDetailsPath = await getPropertyDetails();
 
 
-  const siteMapData1 = AllPaths
-    .map(path => {
-      return `
-    <url>
-      <loc>${APP_URL}${path}</loc>
-      <lastmod>${getDate}</lastmod>
-    </url>`;
-    });
+  // const siteMapData1 = AllPaths
+  //   .map(path => {
+  //     return `
+  //   <url>
+  //     <loc>${APP_URL}${path}</loc>
+  //     <lastmod>${getDate}</lastmod>
+  //   </url>`;
+  //   });
 
-  for (let i = 0; i < siteMapData1.length; i += 1000) {
-    let generatedSitemapSlice1 = '';
-    let sitemapSlice = '';
-    if (i + 1000 > siteMapData1.length) {
-      console.log(siteMapData1.slice(i, siteMapData1.length).length)
-      sitemapSlice = `${siteMapData1.slice(i, siteMapData1.length).join("")}`;
-      generatedSitemapSlice1 = `<?xml version="1.0" encoding="UTF-8"?>
-                                <urlset
-                                xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
-                                xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-                                xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd"
-                                >
-                                ${sitemapSlice}
-                                </urlset>`;
-    } else {
-      console.log(siteMapData1.slice(i, i + 1000).length)
-      sitemapSlice = `${siteMapData1.slice(i, i+1000).join("")}`;
-      generatedSitemapSlice1 = `<?xml version="1.0" encoding="UTF-8"?>
-                                <urlset
-                                xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
-                                xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-                                xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd"
-                                >
-                                ${sitemapSlice}
-                                </urlset>`;
-    }
-    const formattedSitemap2 = formatted(generatedSitemapSlice1);
-    fs.writeFileSync(`${dirname}/public/sitemap-search-${(i/1000)+1}.xml`, formattedSitemap2, "utf8");
-    mainSitemap.push(`${APP_URL}/sitemap-search-${(i/1000)+1}.xml`);
-  }
+  // for (let i = 0; i < siteMapData1.length; i += 1000) {
+  //   let generatedSitemapSlice1 = '';
+  //   let sitemapSlice = '';
+  //   if (i + 1000 > siteMapData1.length) {
+  //     console.log(siteMapData1.slice(i, siteMapData1.length).length)
+  //     sitemapSlice = `${siteMapData1.slice(i, siteMapData1.length).join("")}`;
+  //     generatedSitemapSlice1 = `<?xml version="1.0" encoding="UTF-8"?>
+  //                               <urlset
+  //                               xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+  //                               xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  //                               xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd"
+  //                               >
+  //                               ${sitemapSlice}
+  //                               </urlset>`;
+  //   } else {
+  //     console.log(siteMapData1.slice(i, i + 1000).length)
+  //     sitemapSlice = `${siteMapData1.slice(i, i+1000).join("")}`;
+  //     generatedSitemapSlice1 = `<?xml version="1.0" encoding="UTF-8"?>
+  //                               <urlset
+  //                               xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+  //                               xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  //                               xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd"
+  //                               >
+  //                               ${sitemapSlice}
+  //                               </urlset>`;
+  //   }
+  //   const formattedSitemap2 = formatted(generatedSitemapSlice1);
+  //   fs.writeFileSync(`${dirname}/public/sitemap-search-${(i/1000)+1}.xml`, formattedSitemap2, "utf8");
+  //   mainSitemap.push(`${APP_URL}/sitemap-search-${(i/1000)+1}.xml`);
+  // }
 
   const siteMapData2 = [];
 
@@ -159,27 +159,34 @@ async function main() {
     mainSitemap.push(`${APP_URL}/sitemap-project-${(i/1000)+1}.xml`);
   }
 
-  console.log(siteMapData2.length);
+  // console.log(siteMapData2.length);
 
   //passsing directoryPath and callback function
-  const commonPages = fs.readdirSync(directoryPath);
+  // const commonPages = fs.readdirSync(directoryPath);
 
-  let pages = [];
-  commonPages.forEach(page => {
-    let pageTemp = page.replace(".tsx", "");
-    if (!pageTemp.match("[^a-zA-Z]+")) {
-      pages.push(page)
-    }
-  });
-  pages.splice(pages.indexOf('api'), 1);
-  pages = pages.map(item => {
-    return item.replace(".tsx", '');
-  });
+  // let pages = [];
+  // commonPages.forEach(page => {
+  //   let pageTemp = page.replace(".tsx", "");
+  //   if (!pageTemp.match("[^a-zA-Z]+")) {
+  //     pages.push(page)
+  //   }
+  // });
+  // pages.splice(pages.indexOf('api'), 1);
+  // pages = pages.map(item => {
+  //   return item.replace(".tsx", '');
+  // });
 
-  console.log(pages);
+  const finalPages = ['about', 'contactUs', 'login', 'privacyPolicy', 'propertySearch', 'signUp', 'terms'];
+  // pages.forEach((page) => {
+  //   if (page !== 'favorites' || page !== 'index' || page !== 'propertySearch') {
+  //     finalPages.push(page);
+  //   }
+  // });
+
+  // console.log(finalPages);
 
   const commonPageSitemap = `
-  ${pages
+  ${finalPages
       .map(path => {
         return `
     <url>
