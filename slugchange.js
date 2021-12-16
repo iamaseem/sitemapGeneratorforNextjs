@@ -36,7 +36,7 @@ async function main(){
   const propertyDetails = await getPropertyDetails();
   const propertySlug = [];
   propertyDetails.forEach(item => {
-    let cleanProjectName = item.projectName.replace(/[^a-zA-Z ]/g,"").replace(/ /g, "-").replace(/-+/g, "-").replace(/-$/g, "");
+    let cleanProjectName = item.projectName.replace(/[^a-zA-Z ]/g,"").replace(/ /g, "-").replace(/-+/g, "-").replace(/-$/g, "").replace(/^-/g, "");
     let slug = `${cleanProjectName}-${item.location.replace(/ /g, "-").replace(/-+/g, "-").replace(/-$/g, "")}-${item.district.replace(/ /g, "-").replace(/-+/g, "-").replace(/-$/g, "")}`.toLowerCase();
     propertySlug.push({id: item.id, slug});
   });
